@@ -1,4 +1,5 @@
 <?php
+    session_start();
   //muncul/pilih sebuah atau semua kolom dari table user
   include 'koneksi.php';
   

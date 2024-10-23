@@ -1,4 +1,5 @@
 <?php
+    session_start();
   //muncul/pilih sebuah atau semua kolom dari table user
   include 'koneksi.php';
   
@@ -8,7 +9,34 @@
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $insert = mysqli_query($koneksi, "INSERT INTO user (nama, email, password) VALUES ('$nama', '$email', '$password')");
+    //$_POST: form input name=''
+    //$_GET: url ?param='nilai'
+    //$_FILES: from uploaded files
+
+    if(!empty($_FILES['foto']['name'])){
+        $nama_foto = $_FILES['foto']['name'];
+        $ukuran_foto = $_FILES['foto']['size'];
+
+
+        //png, jpg, jpeg
+        $ext = array('png', 'jpg', 'jpeg');
+        $extFoto = pathinfo($nama_foto, PATHINFO_EXTENSION);
+
+        // jika extension foto tidak ada/ tidak sesuai dengan ext yang telah di-declare di array $ext
+        if (!in_array($extFoto, $ext)) {
+            echo "Ekstensi/jenis file tidak ditemukan. Ekstensi yang diizinkan: " . implode(", ", $extFoto);
+            die;
+        }else {
+            //pindah directory gambar ke folder upload (tmp/temporary path)
+            move_uploaded_file($_FILES['foto']['tmp_name'], 'upload/' . $nama_foto);
+
+            $insert = mysqli_query($koneksi, "INSERT INTO user (nama, email, password, foto) VALUES ('$nama', '$email', '$password','$nama_foto')");
+
+        }
+    } else {
+        $insert = mysqli_query($koneksi, "INSERT INTO user (nama, email, password) VALUES ('$nama', '$email', '$password')");
+    }
+
     header("location:user.php?tambah=berhasil");
   }
 
@@ -104,7 +132,7 @@
                                         <?php endif ?>
 
 
-                                        <form action="" method="POST">
+                                        <form action="" method="POST" enctype="multipart/form-data">
                                             <div class="mb-3 row">
                                                 <div class="col-sm-6">
                                                     <label for="" class="form-label">Nama</label>
@@ -122,6 +150,12 @@
                                                 <div class="col-sm-12">
                                                     <label for="" class="form-label">Password</label>
                                                     <input type="password" class="form-control" id="" name="password" placeholder="Masukkan password Anda">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <div class="col-sm-12">
+                                                    <label for="" class="form-label">Foto</label>
+                                                    <input type="file" name="foto">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
