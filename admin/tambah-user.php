@@ -2,16 +2,35 @@
   //muncul/pilih sebuah atau semua kolom dari table user
   include 'koneksi.php';
   
-  $queryUser = mysqli_query($koneksi, "SELECT * FROM user");
-  //mysqli_fetch_assoc($query) = untuk menjadikan hasil query menjadi sebuah data (object/array)
+  //jika button simpan ditekan, POST ambil value CREATE NEW ACCOUNT
+  if (isset($_POST['simpan'])) {
+    $nama = $_POST['nama'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-  //jika parameter ada ?delete=value[id] param
-  if (isset($_GET['delete'])) {
-    $id = $_GET['delete']; //mengambil nilai params
+    $insert = mysqli_query($koneksi, "INSERT INTO user (nama, email, password) VALUES ('$nama', '$email', '$password')");
+    header("location:user.php?tambah=berhasil");
+  }
 
-    //query / perintah hapus
-    $delete = mysqli_query($koneksi, "DELETE FROM user WHERE id='$id'");
-    header("location:user.php?hapus=berhasil");
+  //EDIT/UPDATA ACCOUNT DATA
+  $id = isset($_GET['edit']) ? $_GET['edit'] : '';
+  $queryEdit = mysqli_query($koneksi, "SELECT * FROM user WHERE id='$id'");
+  $rowEdit = mysqli_fetch_assoc($queryEdit);
+
+  // when button edit is clicked, insert/update into db
+  if (isset($_POST['edit'])) {
+    $nama = $_POST['nama'];
+    $email = $_POST['email'];
+
+    //jika password diisi oleh user
+    if ($_POST['password']) {
+        $password = $_POST['password'];
+    }else {
+        $password = $rowEdit['password'];
+    }
+
+    $update = mysqli_query($koneksi, "UPDATE user SET nama='$nama', email='$email', password='$password' WHERE id='$id'");
+    header("location:user.php?ubah=berhasil");
   }
 ?>
 
@@ -76,7 +95,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">
-                                    <div class="card-header">Data User</div>
+                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> User</div>
                                     <div class="card-body">
                                         <?php if(isset($_GET['hapus'])): ?>
                                         <div class="alert alert-success" role="alert">
@@ -84,38 +103,33 @@
                                         </div>
                                         <?php endif ?>
 
-                                        <div align="right" class="mb-3">
-                                            <a href="tambah-user.php" class="btn btn-primary">Tambah</a>
-                                        </div>
 
+                                        <form action="" method="POST">
+                                            <div class="mb-3 row">
+                                                <div class="col-sm-6">
+                                                    <label for="" class="form-label">Nama</label>
+                                                    <input type="text" class="form-control" name="nama" placeholder="Masukkan nama Anda" required value="<?php echo isset($_GET['edit']) ? $rowEdit['nama'] : '' ?>">
+                                                </div>
 
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Nama</th>
-                                                    <th>Email</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $no = 1; while ($rowUser = mysqli_fetch_assoc($queryUser)) { ?>
-                                                <tr>
-                                                    <td><?php echo $no++ ?></td>
-                                                    <td><?php echo $rowUser['nama'] ?></td>
-                                                    <td><?php echo $rowUser['email'] ?></td>
-                                                    <td>
-                                                        <a href="tambah-user.php?edit=<?php echo $rowUser['id'] ?>" class="btn btn-success btn-sm">
-                                                            <span class="tf-icon bx bx-pencil bx-18px"></span>
-                                                        </a>
-                                                        <a onclick="return confirm('Apakah Anda yakin akan menghapus data ini?')" href="user.php?delete=<?php echo $rowUser['id'] ?>" class="btn btn-danger btn-sm">
-                                                            <span class="tf-icon bx bx-trash bx-18px"></span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                                <div class="col-sm-6">
+                                                    <label for="" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" name="email" placeholder="Masukkan email Anda" required value="<?php echo isset($_GET['edit']) ? $rowEdit['email'] : '' ?>">
+                                                </div>
+
+                                                
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <div class="col-sm-12">
+                                                    <label for="" class="form-label">Password</label>
+                                                    <input type="password" class="form-control" id="" name="password" placeholder="Masukkan password Anda">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <button class="btn btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">Simpan</button>
+                                            </div>
+                                        </form>
+
+                                        
                                     </div>
                                 </div>
                             </div>
