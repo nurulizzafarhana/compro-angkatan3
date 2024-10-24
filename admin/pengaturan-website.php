@@ -13,6 +13,9 @@
     $website_name = $_POST['website_name'];
     $website_link = $_POST['website_link'];
     $id = $_POST['id'];
+    $website_phone = $_POST['website_phone'];
+    $website_email = $_POST['website_email'];
+    $website_address = $_POST['website_address'];
 
     //cari data di tbl general_setting, jika datanya ada akan di-update,
     //jika tidak ada, akan di-insert
@@ -34,11 +37,11 @@
                 //pindah directory gambar ke folder upload (tmp/temporary path)
                 move_uploaded_file($_FILES['foto']['tmp_name'], 'upload/' . $nama_foto);
 
-                $update = mysqli_query($koneksi, "UPDATE general_setting SET website_name='$website_name', website_link='$website_link', logo='$nama_foto' WHERE id='$id'");
+                $update = mysqli_query($koneksi, "UPDATE general_setting SET website_name='$website_name', website_link='$website_link', logo='$nama_foto', website_phone='$website_phone', website_email='$website_email', website_address='$website_address' WHERE id='$id'");
 
             }
         } else {
-            $update = mysqli_query($koneksi, "UPDATE general_setting SET website_name='$website_name', website_link='$website_link' WHERE id='$id'");
+            $update = mysqli_query($koneksi, "UPDATE general_setting SET website_name='$website_name', website_link='$website_link', website_phone='$website_phone', website_email='$website_email', website_address='$website_address' WHERE id='$id'");
         }
     }else {
         if(!empty($_FILES['foto']['name'])){
@@ -58,11 +61,11 @@
                 //pindah directory gambar ke folder upload (tmp/temporary path)
                 move_uploaded_file($_FILES['foto']['tmp_name'], 'upload/' . $nama_foto);
 
-                $insert = mysqli_query($koneksi, "INSERT INTO general_setting (website_name, website_link, logo) VALUES ('$website_name', '$website_link', '$nama_foto')");
+                $insert = mysqli_query($koneksi, "INSERT INTO general_setting (website_name, website_link, logo, website_phone, website_email, website_address) VALUES ('$website_name', '$website_link', '$nama_foto', '$website_phone', '$website_email', '$website_address')");
 
             }
         } else {
-            $insert = mysqli_query($koneksi, "INSERT INTO general_setting (website_name, website_link) VALUES ('$website_name', '$website_link')");
+            $insert = mysqli_query($koneksi, "INSERT INTO general_setting (website_name, website_link, website_phone, website_email, website_address) VALUES ('$website_name', '$website_link', '$website_phone', '$website_email', '$website_address')");
         }
     }
 
@@ -174,21 +177,34 @@
                                             <input type="hidden" class="form-control" name="id" value="<?php echo isset($rowPengaturan['id']) ? $rowPengaturan['id'] : '' ?>">
                                             <div class="mb-3 row">
                                                 <div class="col-sm-6">
-                                                    <label for="" class="form-label">Nama Website</label>
-                                                    <input type="text" class="form-control" name="website_name" placeholder="Masukkan nama website" required value="<?php echo isset($rowPengaturan['website_name']) ? $rowPengaturan['website_name'] : '' ?>">
+                                                    <div class="mb-3">
+                                                        <label for="" class="form-label">Nama Website</label>
+                                                        <input type="text" class="form-control" name="website_name" placeholder="Masukkan nama website" required value="<?php echo isset($rowPengaturan['website_name']) ? $rowPengaturan['website_name'] : '' ?>">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="" class="form-label">Telepon</label>
+                                                        <input type="text" class="form-control" name="website_phone" placeholder="Masukkan telepon website" required value="<?php echo isset($rowPengaturan['website_phone']) ? $rowPengaturan['website_phone'] : '' ?>">
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-sm-6">
-                                                    <label for="" class="form-label">Link Website</label>
-                                                    <input type="url" class="form-control" name="website_link" placeholder="Masukkan link website" required value="<?php echo isset($rowPengaturan['website_link']) ? $rowPengaturan['website_link'] : '' ?>">
+                                                    <div class="mb-3">
+                                                        <label for="" class="form-label">Link Website</label>
+                                                        <input type="url" class="form-control" name="website_link" placeholder="Masukkan link website" required value="<?php echo isset($rowPengaturan['website_link']) ? $rowPengaturan['website_link'] : '' ?>">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="" class="form-label">Email Website</label>
+                                                        <input type="email" class="form-control" name="website_email" placeholder="Masukkan email website" required value="<?php echo isset($rowPengaturan['website_email']) ? $rowPengaturan['website_email'] : '' ?>">
+                                                    </div>
                                                 </div>
 
                                                 
                                             </div>
                                             <div class="mb-3 row">
                                                 <div class="col-sm-12">
-                                                    <label for="" class="form-label">Password</label>
-                                                    <input type="password" class="form-control" id="" name="password" placeholder="Masukkan password Anda">
+                                                    <label for="" class="form-label">Alamat</label>
+                                                    <input type="text" class="form-control" id="" name="website_address" placeholder="Masukkan alamat Anda" value="<?php echo isset($rowPengaturan['website_address']) ? $rowPengaturan['website_address'] : '' ?>">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
