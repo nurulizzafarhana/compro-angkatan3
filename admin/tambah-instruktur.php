@@ -39,7 +39,7 @@
     header("location:instruktur.php?tambah=berhasil");
   }
 
-  //EDIT/UPDATA ACCOUNT DATA
+  //EDIT/UPDATA INSTRUCTURE DATA
   $id = isset($_GET['edit']) ? $_GET['edit'] : '';
   $queryEdit = mysqli_query($koneksi, "SELECT * FROM instruktur WHERE id='$id'");
   $rowEdit = mysqli_fetch_assoc($queryEdit);
