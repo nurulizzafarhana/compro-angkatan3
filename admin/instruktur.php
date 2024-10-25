@@ -105,7 +105,7 @@
                                                 <tr>
                                                     <td><?php echo $no++ ?></td>
                                                     <td>
-                                                        <img width="150" src="upload/<?php echo $row['foto'] ?>" alt="">
+                                                        <img width="100" src="upload/<?php echo $row['foto'] ?>" alt="">
                                                     </td>
                                                     <td><?php echo $row['nama_instruktur'] ?></td>
                                                     <td><?php echo $row['jurusan_instruktur'] ?></td>
