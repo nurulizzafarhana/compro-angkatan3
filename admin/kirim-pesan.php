@@ -3,9 +3,31 @@
 
   include 'koneksi.php';
 
-  $id = $_GET['pesanId'];
-  $selectContact = mysqli_query($koneksi, "SELECT * FROM contact WHERE id = $id");
-  $rowContact = mysqli_fetch_assoc($selectContact);
+
+
+  if(isset($_GET['pesanId'])){
+      $id = $_GET['pesanId'];
+      $selectContact = mysqli_query($koneksi, "SELECT * FROM contact WHERE id = $id");
+      $rowContact = mysqli_fetch_assoc($selectContact);
+
+  }
+
+  if (isset($_POST['kirim-bosss']) && isset($_GET['pesanId'])) {
+    $id = $_GET['pesanId'];
+    $email = $_POST['email'];
+    $subject = $_POST['subject'];
+    $balaspesan = $_POST['balaspesan'];
+
+    $headers = "From: swog.menyen19@gmail.com" . "\r\n" . "Reply-To: swog.menyen19@gmail.com" . "\r\n" . "Content-Type: text/plain; charset=UTF8" . "\r\n" . "MIME-Version: 1.0" . "\r\n";
+
+    if (mail($email, $subject, $balaspesan, $headers)) {
+        header("Location: contact-admin.php?status=berhasil-terkirim");
+        exit();
+    }else {
+        header("Location: kirim-pesan.php?status=gagal-terkirim");
+        exit();
+    }
+  }
   
 
 ?>
@@ -63,7 +85,7 @@
 
                 <!-- / Navbar -->
 
-                <!-- Content wrapper -->
+                <!-- Content wrapper -->  
                 <div class="content-wrapper">
                     <!-- Content -->
 
@@ -73,41 +95,32 @@
                                 <div class="card">
                                     <div class="card-header"> Balas Pesan </div>
                                     <div class="card-body">
-                                        <?php if(isset($_GET['hapus'])): ?>
-                                        <div class="alert alert-success" role="alert">
-                                            Data berhasil dihapus!
-                                        </div>
-                                        <?php endif ?>
+
+                                        <ul style="list-style-type: '-'">
+                                            <li><pre> Name: <?php echo $rowContact['nama'] ?></pre></li>
+                                            <li><pre> Email: <?php echo $rowContact['email'] ?></pre></li>
+                                            <li><pre> Subject: <?php echo $rowContact['subject'] ?></pre></li>
+                                            <li><pre> Message: <?php echo $rowContact['message'] ?></pre></li>
+                                        </ul>
 
 
                                         <form action="" method="POST" enctype="multipart/form-data">
-                                            <div class="mb-3 row">
-                                                <div class="col-sm-6">
-                                                    <label for="" class="form-label">Nama</label>
-                                                    <input type="text" class="form-control" name="nama" placeholder="Masukkan nama Anda" required value="<?php echo isset($_GET['edit']) ? $rowEdit['nama'] : '' ?>">
-                                                </div>
+                                            <div class="">
+                                                <input type="text" name="email" value="<?php echo $rowContact['email'] ?>">
+                                            </div>
 
-                                                <div class="col-sm-6">
-                                                    <label for="" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" name="email" placeholder="Masukkan email Anda" required value="<?php echo isset($_GET['edit']) ? $rowEdit['email'] : '' ?>">
-                                                </div>
+                                            <div class="mt-5">
+                                                <label class="form-label" for="">Subject</label>
+                                                <input type="text" class="form-control" name="subject" required>
+                                            </div>
 
-                                                
+                                            <div class="mt-3">
+                                                <label class="form-label" for="">Balas Pesan</label>
+                                                <textarea type="text" class="form-control" name="balaspesan" cols="30" rows="10" required></textarea>
                                             </div>
-                                            <div class="mb-3 row">
-                                                <div class="col-sm-12">
-                                                    <label for="" class="form-label">Password</label>
-                                                    <input type="password" class="form-control" id="" name="password" placeholder="Masukkan password Anda">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <div class="col-sm-12">
-                                                    <label for="" class="form-label">Foto</label>
-                                                    <input type="file" name="foto">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <button class="btn btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'simpan' ?>" type="submit">Simpan</button>
+
+                                            <div class="mt-3">
+                                                <button class="btn btn-primary" name="kirim-bosss">Kirim Pesan</button>
                                             </div>
                                         </form>
 
