@@ -114,6 +114,8 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Pages</span>
             </li>
+
+            <!-- User -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
@@ -125,6 +127,13 @@
                     <div data-i18n="Account">Data User</div>
                   </a>
                 </li>
+                
+                <li class="menu-item">
+                  <a href="contact-admin.php" class="menu-link">
+                    <div data-i18n="Account">Contact</div>
+                  </a>
+                </li>
+
                 <li class="menu-item">
                   <a href="pages-account-settings-notifications.html" class="menu-link">
                     <div data-i18n="Notifications">Notifications</div>
@@ -137,6 +146,9 @@
                 </li>
               </ul>
             </li>
+            <!-- End of User -->
+
+            <!-- Instruktur -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
@@ -160,6 +172,9 @@
                 </li>
               </ul>
             </li>
+            <!-- End of Instruktur -->
+
+            <!-- Profil -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
@@ -178,6 +193,10 @@
                 </li>
               </ul>
             </li>
+            <!-- Profil -->
+
+
+
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
             <!-- Cards -->
